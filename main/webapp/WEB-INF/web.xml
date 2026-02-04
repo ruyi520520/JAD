@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app 
+    xmlns="https://jakarta.ee/xml/ns/jakartaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                        https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+    version="5.0">
+
+    <!-- 1. Welcome Page -->
+    <welcome-file-list>
+        <welcome-file>home.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- 2. Custom Error Pages -->
+
+    <!-- 404 Not Found -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/errorHandling/404.jsp</location>
+    </error-page>
+    
+    <!-- 400 Bad Request -->
+    <error-page>
+        <error-code>400</error-code>
+        <location>/errorHandling/400.jsp</location>
+    </error-page>
+
+    <!-- 401 Unauthorized -->
+    <error-page>
+        <error-code>401</error-code>
+        <location>/errorHandling/401.jsp</location>
+    </error-page>
+    
+    <!-- 500 Internal Server Error -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/errorHandling/500.jsp</location>
+    </error-page>
+
+    <!-- Default Error Fallback -->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/errorHandling/500.jsp</location>
+    </error-page>
+
+    <!-- 3. Session Timeout -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+</web-app>
