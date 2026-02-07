@@ -1,4 +1,4 @@
-package servlet.user;
+package controller.user;
 
 import dbAccess.careHistory.CareHistoryDAO;
 import dbAccess.services.Service;

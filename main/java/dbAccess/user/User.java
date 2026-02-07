@@ -65,6 +65,16 @@ public class User {
         this.createdAt = createdAt;
     }
 
+ // Backwards-compatible constructor (old one)
+    public User(int userId, String username, int roleId, String passwordHash, String email, Timestamp createdAt) {
+        this.userId = userId;
+        this.username = username;
+        this.roleId = roleId;
+        this.passwordHash = passwordHash;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
+    
     /**
      * Minimal constructor used for registration.
      */

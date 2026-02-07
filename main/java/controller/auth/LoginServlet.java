@@ -3,7 +3,7 @@
     Date: 26/1/2026
     Description: ST0510/JAD project 2 - Login servlet
 ==============================================================*/
-package servlet.auth;
+package controller.auth;
 
 import dbAccess.user.User;
 import dbAccess.user.UserDAO;
@@ -64,8 +64,17 @@ public class LoginServlet extends HttpServlet {
 
         session.setAttribute("sessUserId", user.getUserId());
         session.setAttribute("sessUsername", user.getUsername());
-
-        response.sendRedirect(request.getContextPath() + "/home");
+        session.setAttribute("sessRoleId", user.getRoleId());
+        String roleName = (user.getRoleId() == 1) ? "Admin" : "Client";
+        session.setAttribute("sessRoleName", roleName);
+        
+        if (user.getRoleId() == 1) {
+            // Admin
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+        } else {
+            // Client / normal user
+            response.sendRedirect(request.getContextPath() + "/home");
+        }
     }
 
     @Override

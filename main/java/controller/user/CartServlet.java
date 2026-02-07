@@ -3,7 +3,7 @@
     Date: 26/1/2026
     Description: ST0510/JAD project 2 - Cart servlet
 ==============================================================*/
-package servlet.user;
+package controller.user;
 
 import dbAccess.booking.Booking;
 import dbAccess.booking.BookingDAO;

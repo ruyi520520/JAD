@@ -1,18 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
-<%
-    HttpSession sess = request.getSession(false);
-    if (sess == null || sess.getAttribute("sessUserId") == null) {
-        response.sendRedirect("../auth/login.jsp");
-        return;
-    }
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    String roleName = (String) sess.getAttribute("sessRoleName");
-    if (roleName == null || !"Admin".equalsIgnoreCase(roleName)) {
-        response.sendRedirect("../errorHandling/401.jsp");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,10 +14,7 @@
         color: #2C3E50;
         display: flex;
     }
-    .main {
-        flex: 1;
-        padding: 30px;
-    }
+    .main { flex: 1; padding: 30px; }
     .card {
         background-color: #fff;
         border-radius: 18px;
@@ -38,15 +23,8 @@
         max-width: 600px;
         margin: auto;
     }
-    .form-group {
-        margin-bottom: 14px;
-    }
-    label {
-        display: block;
-        font-size: 13px;
-        margin-bottom: 4px;
-        color: #2C3E50;
-    }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 13px; margin-bottom: 4px; color: #2C3E50; }
     input, textarea, select {
         width: 90%;
         padding: 9px 11px;
@@ -73,18 +51,20 @@
         color: #fff;
         box-shadow: 0 6px 16px rgba(46,204,113,0.4);
     }
-    .btn-submit:hover {
-        background-color: #27AE60;
-    }
+    .btn-submit:hover { background-color: #27AE60; }
+    .hint { font-size: 13px; opacity: 0.85; margin: 6px 0 0; }
 </style>
 </head>
+
 <body>
     <%@ include file="../webContent/adminSidebar.jsp" %>
 
     <div class="main">
         <h1>➕ Add New Service</h1>
+
         <div class="card">
-            <form action="processAddService.jsp" method="post">
+            <form action="${pageContext.request.contextPath}/admin/services/add" method="post">
+
                 <div class="form-group">
                     <label for="serviceName">Service Name</label>
                     <input type="text" id="serviceName" name="serviceName" required>
@@ -92,27 +72,23 @@
 
                 <div class="form-group">
                     <label for="categoryId">Category</label>
-                    <select id="categoryId" name="categoryId" required>
-                        <%
-                            try {
-                                Class.forName("com.mysql.cj.jdbc.Driver");
-                                Connection conn = DriverManager.getConnection(
-                                		"jdbc:mysql://127.0.0.1:3306/jad_project?user=root&password=Hw135790&serverTimezone=UTC");
-                                PreparedStatement ps = conn.prepareStatement("SELECT category_id, category_name FROM service_category");
-                                ResultSet rs = ps.executeQuery();
-                                while (rs.next()) {
-                        %>
-                                    <option value="<%= rs.getInt("category_id") %>"><%= rs.getString("category_name") %></option>
-                        <%
-                                }
-                                rs.close();
-                                ps.close();
-                                conn.close();
-                            } catch (Exception e) {
-                                out.println("<option>Error loading categories</option>");
-                            }
-                        %>
-                    </select>
+
+                    <c:choose>
+                        <c:when test="${empty categories}">
+                            <select id="categoryId" name="categoryId" disabled>
+                                <option>No categories available</option>
+                            </select>
+                            <p class="hint">Create categories first before adding services.</p>
+                        </c:when>
+
+                        <c:otherwise>
+                            <select id="categoryId" name="categoryId" required>
+                                <c:forEach var="c" items="${categories}">
+                                    <option value="${c.categoryId}">${c.categoryName}</option>
+                                </c:forEach>
+                            </select>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
                 <div class="form-group">
@@ -124,8 +100,6 @@
                     <label for="price">Price (SGD)</label>
                     <input type="number" step="0.01" id="price" name="price" required>
                 </div>
-
-                <!-- Image upload will be added later -->
 
                 <button type="submit" class="btn-submit">Create Service</button>
             </form>

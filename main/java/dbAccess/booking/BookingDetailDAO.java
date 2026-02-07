@@ -283,6 +283,34 @@ public class BookingDetailDAO {
             return false;
         }
     }
+    
+    public List<String> getServiceNamesByBookingId(int bookingId) {
+        List<String> services = new ArrayList<>();
+
+        String sql =
+            "SELECT s.service_name " +
+            "FROM booking_details bd " +
+            "JOIN service s ON bd.service_id = s.service_id " +
+            "WHERE bd.booking_id = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    services.add(rs.getString("service_name"));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return services;
+    }
+
 
 
 }

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <style>
     .sidebar {
         width: 220px;
@@ -49,14 +50,16 @@
     <div>
         <h2>⚙️ Admin Panel</h2>
         <div class="sidebar-nav">
-            <a href="adminDashboard.jsp">🏠 Dashboard</a>
-            <a href="manageServices.jsp">🛠 Manage Services</a>
-            <a href="manageBookings.jsp">📅 View Bookings</a>
-            <a href="viewClients.jsp">👥 Clients</a>
-            <a href="viewAuditLogs.jsp">📝 Audit Log</a>
+            <!-- Controller routes (preferred) -->
+            <a href="${pageContext.request.contextPath}/admin/dashboard">🏠 Dashboard</a>
+            <a href="${pageContext.request.contextPath}/admin/services">🛠 Manage Services</a>
+            <a href="${pageContext.request.contextPath}/admin/bookings">📅 View Bookings</a>
+            <a href="${pageContext.request.contextPath}/admin/clients">👥 Clients</a>
+            <a href="${pageContext.request.contextPath}/admin/auditLogs">📝 Audit Log</a>
         </div>
     </div>
+
     <div>
-        <a href="../auth/logout.jsp" class="logout-btn">🚪 Logout</a>
+        <a href="${pageContext.request.contextPath}/auth/logout" class="logout-btn">🚪 Logout</a>
     </div>
 </div>

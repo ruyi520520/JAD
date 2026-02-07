@@ -1,19 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-    HttpSession sess = request.getSession(false);
-    if (sess == null || sess.getAttribute("sessUserId") == null) {
-        response.sendRedirect("../auth/login.jsp");
-        return;
-    }
-
-    String roleName = (String) sess.getAttribute("sessRoleName");
-    if (roleName == null || !"Admin".equalsIgnoreCase(roleName)) {
-        response.sendRedirect("../errorHandling/401.jsp");
-        return;
-    }
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,76 +16,65 @@
     label { display:block; font-size:13px; margin-bottom:4px; }
     input, select { width:90%; padding:9px 11px; border-radius:8px; border:1px solid #D0D7DE;
                     background:#FAFBFC; font-size:13px; }
-	.btn { padding:6px 12px; border-radius:8px; border:none; cursor:pointer;
-           font-size:13px; font-weight:600; text-decoration:none; margin-right:6px; }
     .btn-submit { width:100%; padding:10px; border-radius:999px; border:none; font-size:14px;
                   font-weight:600; cursor:pointer; background:#3498DB; color:#fff; }
     .btn-submit:hover { background:#2980B9; }
+    .error { background:#ffe6e6; border:1px solid #ffb3b3; padding:10px; border-radius:10px; margin-bottom:12px; }
 </style>
 </head>
 <body>
     <%@ include file="../webContent/adminSidebar.jsp" %>
+
     <div class="main">
         <h1>✏️ Edit Booking</h1>
+
         <div class="card">
-            <%
-                String idStr = request.getParameter("id");
-                if (idStr != null) {
-                    try {
-                        int bookingId = Integer.parseInt(idStr);
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        Connection conn = DriverManager.getConnection(
-                        		"jdbc:mysql://127.0.0.1:3306/jad_project?user=root&password=Hw135790&serverTimezone=UTC");
+            <c:if test="${not empty error}">
+                <div class="error">${error}</div>
+            </c:if>
 
-                        String sql = "SELECT date, total_price, status, payment_status FROM booking WHERE booking_id=?";
-                        PreparedStatement ps = conn.prepareStatement(sql);
-                        ps.setInt(1, bookingId);
-                        ResultSet rs = ps.executeQuery();
-                        if (rs.next()) {
-            %>
-            <form action="bookings/processEditBooking.jsp" method="post">
-                <input type="hidden" name="bookingId" value="<%= bookingId %>">
+            <c:if test="${not empty booking}">
+                <form action="${pageContext.request.contextPath}/admin/bookings/edit" method="post">
+                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
 
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="datetime-local" id="date" name="date"
-                           value="<%= rs.getTimestamp("date").toLocalDateTime().toString().replace('T',' ') %>" required>
-                </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <!-- booking.bookingDate might be java.sql.Date in your model.
+                             If your DB column is DATETIME, consider changing your entity to Timestamp.
+                             For now, this expects the servlet to provide a formatted string if needed. -->
+                        <input type="datetime-local" id="date" name="date"
+                               value="${dateValue}" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="totalPrice">Total Price</label>
-                    <input type="number" step="0.01" id="totalPrice" name="totalPrice"
-                           value="<%= rs.getDouble("total_price") %>" required>
-                </div>
+                    <div class="form-group">
+                        <label for="totalPrice">Total Price</label>
+                        <input type="number" step="0.01" id="totalPrice" name="totalPrice"
+                               value="${booking.totalPrice}" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select id="status" name="status" required>
-                        <option <%= rs.getString("status").equals("PENDING")?"selected":"" %>>PENDING</option>
-                        <option <%= rs.getString("status").equals("CONFIRMED")?"selected":"" %>>CONFIRMED</option>
-                        <option <%= rs.getString("status").equals("COMPLETED")?"selected":"" %>>COMPLETED</option>
-                        <option <%= rs.getString("status").equals("CANCELLED")?"selected":"" %>>CANCELLED</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" required>
+                            <option value="PENDING"   <c:if test="${booking.status=='PENDING'}">selected</c:if>>PENDING</option>
+                            <option value="CONFIRMED" <c:if test="${booking.status=='CONFIRMED'}">selected</c:if>>CONFIRMED</option>
+                            <option value="COMPLETED" <c:if test="${booking.status=='COMPLETED'}">selected</c:if>>COMPLETED</option>
+                            <option value="CANCELLED" <c:if test="${booking.status=='CANCELLED'}">selected</c:if>>CANCELLED</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="payment">Payment Status</label>
-                    <select id="payment" name="payment" required>
-                        <option <%= rs.getString("payment_status").equals("UNPAID")?"selected":"" %>>UNPAID</option>
-                        <option <%= rs.getString("payment_status").equals("PAID")?"selected":"" %>>PAID</option>
-                        <option <%= rs.getString("payment_status").equals("REFUNDED")?"selected":"" %>>REFUNDED</option>
-                        <option <%= rs.getString("payment_status").equals("FAILED")?"selected":"" %>>FAILED</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="payment">Payment Status</label>
+                        <select id="payment" name="payment" required>
+                            <option value="UNPAID"    <c:if test="${booking.paymentStatus=='UNPAID'}">selected</c:if>>UNPAID</option>
+                            <option value="PAID"      <c:if test="${booking.paymentStatus=='PAID'}">selected</c:if>>PAID</option>
+                            <option value="REFUNDED"  <c:if test="${booking.paymentStatus=='REFUNDED'}">selected</c:if>>REFUNDED</option>
+                            <option value="FAILED"    <c:if test="${booking.paymentStatus=='FAILED'}">selected</c:if>>FAILED</option>
+                        </select>
+                    </div>
 
-                <button type="submit" class="btn-submit">Update Booking</button>
-            </form>
-            <%
-                        }
-                        rs.close(); ps.close(); conn.close();
-                    } catch (Exception e) { out.println("<p>Error: "+e.getMessage()+"</p>"); }
-                } else { out.println("<p>No booking ID provided.</p>"); }
-            %>
+                    <button type="submit" class="btn-submit">Update Booking</button>
+                </form>
+            </c:if>
         </div>
     </div>
 </body>

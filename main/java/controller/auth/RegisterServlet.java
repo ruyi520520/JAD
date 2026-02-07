@@ -3,7 +3,7 @@
     Date: 26/1/2026
     Description: ST0510/JAD project 2 - Register servlet
 ==============================================================*/
-package servlet.auth;
+package controller.auth;
 
 import dbAccess.user.UserDAO;
 import dbAccess.user.User;

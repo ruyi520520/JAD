@@ -1,4 +1,4 @@
-package servlet.user;
+package controller.user;
 
 import dbAccess.user.User;
 import dbAccess.user.UserDAO;

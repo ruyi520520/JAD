@@ -3,7 +3,7 @@
     Date: 26/1/2026
     Description: ST0510/JAD project 2 - Navbar servlet
 ==============================================================*/
-package servlet.filter;
+package controller.filter;
 
 import dbAccess.services.Service;
 import dbAccess.services.ServiceAndCategory;

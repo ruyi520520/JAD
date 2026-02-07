@@ -300,4 +300,48 @@ public class UserDAO {
     public boolean isEmailExists(String email) {
         return getUserByEmail(email) != null;
     }
+    
+    // get total client count
+	public int getClientCount() {
+   	 String sql = "SELECT COUNT(*) FROM user WHERE role_id = 2";
+   	 try (Connection conn = getConnection();
+   	      PreparedStatement ps = conn.prepareStatement(sql);
+   	      ResultSet rs = ps.executeQuery()) {
+   	     if (rs.next()) return rs.getInt(1);
+   	 } catch (Exception e) { e.printStackTrace(); }
+   	 return 0;
+   	}
+	
+	// get paginated clients (role_id = 2)
+	public List<User> getClientsPage(int offset, int limit) {
+	    List<User> list = new ArrayList<>();
+
+	    String sql =
+	        "SELECT user_id, username, role_id, password_hash, email, created_at " +
+	        "FROM user " +
+	        "WHERE role_id = 2 " +
+	        "ORDER BY user_id " +
+	        "LIMIT ?, ?";
+
+	    try (Connection conn = getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setInt(1, offset);
+	        ps.setInt(2, limit);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                list.add(mapUser(rs));
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+
+
+
 }
