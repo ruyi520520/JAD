@@ -65,11 +65,18 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("sessUserId", user.getUserId());
         session.setAttribute("sessUsername", user.getUsername());
         session.setAttribute("sessRoleId", user.getRoleId());
-        String roleName = (user.getRoleId() == 1) ? "Admin" : "Client";
+        String roleName;
+        if (user.getRoleId() == 1) {
+            roleName = "Admin";
+        } else if (user.getRoleId() == 2) {
+            roleName = "Staff";
+        } else {
+            roleName = "Client";
+        }
         session.setAttribute("sessRoleName", roleName);
         
-        if (user.getRoleId() == 1) {
-            // Admin
+        if (user.getRoleId() == 1 || user.getRoleId() == 2) {
+            // Admin / Staff
             response.sendRedirect(request.getContextPath() + "/admin/dashboard");
         } else {
             // Client / normal user

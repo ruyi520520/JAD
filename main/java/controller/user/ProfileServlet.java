@@ -10,7 +10,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.sql.Date;
 
-@WebServlet("/profile")
+@WebServlet("/user/profile")
 public class ProfileServlet extends HttpServlet {
 
     private final UserDAO userDAO = new UserDAO();

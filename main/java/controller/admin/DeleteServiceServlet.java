@@ -7,7 +7,7 @@ import jakarta.servlet.http.*;
 
 import java.io.IOException;
 
-@WebServlet("/admin/services/delete")
+@WebServlet("/admin/admin-only/services/delete")
 public class DeleteServiceServlet extends HttpServlet {
 
     private final ServiceAndCategoryDAO serviceDAO = new ServiceAndCategoryDAO();
@@ -21,6 +21,6 @@ public class DeleteServiceServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/services");
+        response.sendRedirect(request.getContextPath() + "/admin/admin-only/services");
     }
 }

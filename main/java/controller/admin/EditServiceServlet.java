@@ -11,7 +11,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/admin/services/edit")
+@WebServlet("/admin/admin-only/services/edit")
 public class EditServiceServlet extends HttpServlet {
 
     private final ServiceAndCategoryDAO dao = new ServiceAndCategoryDAO();
@@ -73,6 +73,6 @@ public class EditServiceServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        response.sendRedirect(request.getContextPath() + "/admin/services");
+        response.sendRedirect(request.getContextPath() + "/admin/admin-only/services");
     }
 }

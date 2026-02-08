@@ -33,7 +33,7 @@ import java.util.*;
  * - Draft saving allows an optional booking date. If date is provided, it is stored/updated.
  * - When editing a draft, the existing booking date is pre-filled and preserved if user does not change it.
  */
-@WebServlet("/booking")
+@WebServlet("/user/booking")
 public class BookingServlet extends HttpServlet {
 
     private final BookingDetailDAO detailDao = new BookingDetailDAO();
@@ -138,7 +138,7 @@ public class BookingServlet extends HttpServlet {
                     bookingDao.delete(draftBookingId);
                 }
                 request.getSession().removeAttribute("selectedCartItemIds");
-                response.sendRedirect(request.getContextPath() + "/cart");
+                response.sendRedirect(request.getContextPath() + "/user/cart");
                 return;
             }
 
@@ -218,7 +218,7 @@ public class BookingServlet extends HttpServlet {
                                 response.sendRedirect(request.getContextPath() + "/payment?bookingId=" + bookingId);
                                 return;
                             } else {
-                                response.sendRedirect(request.getContextPath() + "/cart");
+                                response.sendRedirect(request.getContextPath() + "/user/cart");
                                 return;
                             }
                         }

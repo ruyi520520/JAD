@@ -11,7 +11,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/admin/services/add")
+@WebServlet("/admin/admin-only/services/add")
 public class AddServiceServlet extends HttpServlet {
 
     private final ServiceAndCategoryDAO dao = new ServiceAndCategoryDAO();
@@ -28,26 +28,61 @@ public class AddServiceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws ServletException, IOException {
+
+        String categoryIdStr = request.getParameter("categoryId");
+        String name = request.getParameter("serviceName");
+        String desc = request.getParameter("description");
+        String priceStr = request.getParameter("price");
 
         try {
-            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-            String name = request.getParameter("serviceName");
-            String desc = request.getParameter("description");
-            double price = Double.parseDouble(request.getParameter("price"));
+            int categoryId = Integer.parseInt(categoryIdStr);
+            double price = Double.parseDouble(priceStr);
+
+            if (name == null || name.trim().isEmpty()) {
+                throw new IllegalArgumentException("Service name cannot be empty.");
+            }
 
             Service s = new Service();
             s.setCategoryId(categoryId);
-            s.setServiceName(name);
-            s.setDescription(desc);
+            s.setServiceName(name.trim());
+            s.setDescription(desc); 
             s.setPrice(price);
 
-            dao.addService(s);
+            boolean ok = dao.addService(s);
+
+            if (ok) {
+                // Go back to service management page
+                response.sendRedirect(request.getContextPath() + "/admin/admin-only/services");
+            } else {
+                // Show errors
+                request.setAttribute("error", "Failed to add service. Please try again.");
+
+                List<ServiceCategory> categories = dao.getAllCategories();
+                request.setAttribute("categories", categories);
+
+                request.setAttribute("prevCategoryId", categoryIdStr);
+                request.setAttribute("prevServiceName", name);
+                request.setAttribute("prevDescription", desc);
+                request.setAttribute("prevPrice", priceStr);
+
+                request.getRequestDispatcher("/admin/addService.jsp").forward(request, response);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
 
-        response.sendRedirect(request.getContextPath() + "/admin/services");
+            request.setAttribute("error", "Invalid input: " + e.getMessage());
+
+            List<ServiceCategory> categories = dao.getAllCategories();
+            request.setAttribute("categories", categories);
+
+            request.setAttribute("prevCategoryId", categoryIdStr);
+            request.setAttribute("prevServiceName", name);
+            request.setAttribute("prevDescription", desc);
+            request.setAttribute("prevPrice", priceStr);
+
+            request.getRequestDispatcher("/admin/addService.jsp").forward(request, response);
+        }
     }
 }

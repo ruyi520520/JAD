@@ -5,8 +5,8 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.*;
 import java.io.IOException;
 
-@WebFilter("/admin/*")
-public class AdminAuthFilter implements Filter {
+@WebFilter("/admin/admin-only/*")
+public class AdminOnlyAuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -16,12 +16,6 @@ public class AdminAuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
 
         HttpSession sess = request.getSession(false);
-        
-        System.out.println("[AdminAuthFilter] sess=" + (sess != null));
-        System.out.println("[AdminAuthFilter] sessUserId=" + (sess == null ? null : sess.getAttribute("sessUserId")));
-        System.out.println("[AdminAuthFilter] sessRoleName=" + (sess == null ? null : sess.getAttribute("sessRoleName")));
-        System.out.println("[AdminAuthFilter] sessRoleId=" + (sess == null ? null : sess.getAttribute("sessRoleId")));
-
 
         // Not logged in
         if (sess == null || sess.getAttribute("sessUserId") == null) {
@@ -29,7 +23,6 @@ public class AdminAuthFilter implements Filter {
             return;
         }
 
-        // Not admin
         String roleName = (String) sess.getAttribute("sessRoleName");
         if (roleName == null || !"Admin".equalsIgnoreCase(roleName)) {
             response.sendRedirect(request.getContextPath() + "/errorHandling/401.jsp");

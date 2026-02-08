@@ -32,7 +32,7 @@ import java.util.*;
  * - If a pending (PENDING) booking exists for the user, the cart page will show
  *   "Continue editing your previous booking" and redirect user to BookingServlet.
  */
-@WebServlet("/cart")
+@WebServlet("/user/cart")
 public class CartServlet extends HttpServlet {
 
     private final BookingDetailDAO cartDao = new BookingDetailDAO();
@@ -106,7 +106,7 @@ public class CartServlet extends HttpServlet {
                 Booking pendingBooking = bookingDao.getPendingBookingByUserId(userId);
                 if (pendingBooking != null) {
                     response.sendRedirect(request.getContextPath()
-                            + "/booking?draftBookingId=" + pendingBooking.getBookingId());
+                            + "/user/booking?draftBookingId=" + pendingBooking.getBookingId());
                     return;
                 }
 
@@ -127,7 +127,7 @@ public class CartServlet extends HttpServlet {
                     request.getSession().setAttribute("selectedCartItemIds", ids);
 
                     // 7) Redirect to BookingServlet (NOT booking.jsp)
-                    response.sendRedirect(request.getContextPath() + "/booking");
+                    response.sendRedirect(request.getContextPath() + "/user/booking");
                     return;
                 }
 

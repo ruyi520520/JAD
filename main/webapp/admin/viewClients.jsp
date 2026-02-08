@@ -69,7 +69,7 @@
             <!-- Pagination -->
             <div class="pagination">
                 <c:forEach begin="1" end="${totalPages}" var="i">
-                    <a href="${pageContext.request.contextPath}/admin/clients?page=${i}"
+                    <a href="${pageContext.request.contextPath}/admin/admin-only/clients?page=${i}"
                        class="${i == currentPage ? 'active' : ''}">
                         ${i}
                     </a>

@@ -209,7 +209,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-s
     font-size: 18px;
 }
 
-/* ✅ 你原本缺的：user-dropdown 容器 */
 .user-dropdown {
     display: none;
     position: absolute;
@@ -368,25 +367,25 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-s
 				    <div class="user-dropdown">
 				
 				        <!-- Profile -->
-				        <a href="<%= request.getContextPath() %>/profile" class="user-dropdown-item">
+				        <a href="<%= request.getContextPath() %>/user/profile" class="user-dropdown-item">
 				            <span class="item-icon">⚙️</span>
 				            Profile
 				        </a>
 				
 				        <!-- Care History -->
-				        <a href="<%= request.getContextPath() %>/care-history" class="user-dropdown-item">
+				        <a href="<%= request.getContextPath() %>/user/care-history" class="user-dropdown-item">
 				            <span class="item-icon">📅</span>
 				            Care History
 				        </a>
 				
 				        <!-- Cart -->
-				        <a href="<%= request.getContextPath() %>/cart" class="user-dropdown-item">
+				        <a href="<%= request.getContextPath() %>/user/cart" class="user-dropdown-item">
 				            <span class="item-icon">🛒</span>
 				            Cart
 				        </a>
 				
 				        <!-- Logout -->
-				        <form action="<%= request.getContextPath() %>/auth/logout.jsp" method="post">
+				        <form action="${pageContext.request.contextPath}/auth/logout" method="post">
 				            <button type="submit" class="user-dropdown-item user-logout">
 				                <span class="item-icon" style="color: red">➜]</span>
 				                <span>Logout</span>

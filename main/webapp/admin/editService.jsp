@@ -36,7 +36,7 @@
             </c:if>
 
             <c:if test="${not empty service}">
-                <form action="${pageContext.request.contextPath}/admin/services/edit" method="post">
+                <form action="${pageContext.request.contextPath}/admin/admin-only/services/edit" method="post">
                     <input type="hidden" name="serviceId" value="${service.serviceId}">
 
                     <div class="form-group">

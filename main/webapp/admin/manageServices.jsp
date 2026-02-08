@@ -53,7 +53,7 @@
         <h1>🛠 Manage Services</h1>
 
         <div class="card">
-            <a class="btn btn-add" href="${pageContext.request.contextPath}/admin/services/add">➕ Add Service</a>
+            <a class="btn btn-add" href="${pageContext.request.contextPath}/admin/admin-only/services/add">➕ Add Service</a>
 
             <table>
                 <thead>
@@ -77,7 +77,7 @@
                             <td>$${r.price}</td>
                             <td>
                                 <a class="btn btn-edit"
-                                   href="${pageContext.request.contextPath}/admin/services/edit?id=${r.serviceId}">
+                                   href="${pageContext.request.contextPath}/admin/admin-only/services/edit?id=${r.serviceId}">
                                    ✏️ Edit
                                 </a>
 
@@ -97,7 +97,7 @@
 
             <div class="pagination">
                 <c:forEach begin="1" end="${totalPages}" var="i">
-                    <a href="${pageContext.request.contextPath}/admin/services?page=${i}"
+                    <a href="${pageContext.request.contextPath}/admin/admin-only/services?page=${i}"
                        class="${i == currentPage ? 'active' : ''}">
                         ${i}
                     </a>
@@ -112,7 +112,7 @@
             <h3>Confirm Delete</h3>
             <p>Delete <strong id="deleteServiceName"></strong>?</p>
 
-            <form action="${pageContext.request.contextPath}/admin/services/delete" method="post">
+            <form action="${pageContext.request.contextPath}/admin/admin-only/services/delete" method="post">
                 <input type="hidden" id="deleteServiceId" name="serviceId">
                 <button type="submit" class="btn btn-delete">Yes, Delete</button>
                 <button type="button" class="btn btn-edit" onclick="closeServiceModal()">Cancel</button>

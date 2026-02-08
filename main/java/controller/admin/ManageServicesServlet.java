@@ -10,7 +10,7 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/admin/services")
+@WebServlet("/admin/admin-only/services")
 public class ManageServicesServlet extends HttpServlet {
 
     private final ServiceAndCategoryDAO serviceDAO = new ServiceAndCategoryDAO();

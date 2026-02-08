@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.*;
 
-@WebServlet("/care-history")
+@WebServlet("/user/care-history")
 public class CareHistoryServlet extends HttpServlet {
 
     private final CareHistoryDAO historyDAO = new CareHistoryDAO();

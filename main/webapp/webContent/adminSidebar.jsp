@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
     .sidebar {
@@ -40,6 +41,8 @@
         color: #fff;
         font-weight: 600;
         text-decoration: none;
+        position: sticky;
+        bottom: 20px;
     }
     .logout-btn:hover {
         background-color: #A93226;
@@ -49,17 +52,27 @@
 <div class="sidebar">
     <div>
         <h2>⚙️ Admin Panel</h2>
+
         <div class="sidebar-nav">
-            <!-- Controller routes (preferred) -->
+
+            <!-- Admin + staff -->
             <a href="${pageContext.request.contextPath}/admin/dashboard">🏠 Dashboard</a>
-            <a href="${pageContext.request.contextPath}/admin/services">🛠 Manage Services</a>
             <a href="${pageContext.request.contextPath}/admin/bookings">📅 View Bookings</a>
-            <a href="${pageContext.request.contextPath}/admin/clients">👥 Clients</a>
-            <a href="${pageContext.request.contextPath}/admin/auditLogs">📝 Audit Log</a>
+
+            <!-- Admin only -->
+            <c:if test="${sessionScope.sessRoleName eq 'Admin'}">
+                <a href="${pageContext.request.contextPath}/admin/admin-only/services">🛠 Manage Services</a>
+                <a href="${pageContext.request.contextPath}/admin/admin-only/clients">👥 Clients</a>
+                <a href="${pageContext.request.contextPath}/admin/auditLogs">📝 Audit Log</a>
+            </c:if>
+
         </div>
     </div>
 
-    <div>
-        <a href="${pageContext.request.contextPath}/auth/logout" class="logout-btn">🚪 Logout</a>
+    <div class="sidebar-logout">
+        <form action="${pageContext.request.contextPath}/auth/logout" method="post">
+            <button type="submit" class="logout-btn">🚪 Logout</button>
+        </form>
     </div>
 </div>
+

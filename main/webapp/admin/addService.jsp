@@ -63,7 +63,7 @@
         <h1>➕ Add New Service</h1>
 
         <div class="card">
-            <form action="${pageContext.request.contextPath}/admin/services/add" method="post">
+            <form action="${pageContext.request.contextPath}/admin/admin-only/services/add" method="post">
 
                 <div class="form-group">
                     <label for="serviceName">Service Name</label>
