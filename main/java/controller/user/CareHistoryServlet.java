@@ -1,3 +1,8 @@
+/*=====================================
+    Author: Huang Ruyi
+    Date: 4/2/2026
+    Description: ST0510/JAD project 2
+====================================== */
 package controller.user;
 
 import dbAccess.careHistory.CareHistoryDAO;

@@ -1,3 +1,8 @@
+/*=====================================
+    Author: Huang Ruyi
+    Date: 9/2/2026
+    Description: ST0510/JAD project 2
+====================================== */
 package dbAccess.user;
 
 import java.sql.*;
